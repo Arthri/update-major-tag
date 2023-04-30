@@ -2,7 +2,7 @@
 A reusable workflow which automatically updates the major tag(for example, `v1`, `Test.App/v2`) when a new tag is created.
 
 ## Installation
-Add a new workflow under `.github/workflows/` with the following contents:
+Add a new workflow under `.github/workflows/` with the following contents.
 ```yml
 name: Update v<Major> Tag
 run-name: |
