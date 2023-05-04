@@ -16,7 +16,7 @@ on:
       - '**'
 
 jobs:
-  update-tag:
+  update_tag:
     permissions:
       contents: write
     uses: Arthri/update-major-tag/.github/workflows/update-major-tag.yml@v1

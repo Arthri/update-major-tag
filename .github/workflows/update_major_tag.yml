@@ -16,7 +16,7 @@ env:
   TAG_CREATED: ${{ (github.event_name != 'push' && github.event_name != 'delete' || github.event.created) && '1' || '' }}
 
 jobs:
-  update-tag:
+  update_tag:
     if: ${{ contains(github.event.ref, '.') && (github.event_name != 'delete' || github.event.ref_type == 'tag') }}
     permissions:
       contents: write
@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Extract Major Tag
-        id: get-major
+        id: get_major
         run: |
           tag=${{ github.event.ref }}
           if ${{ github.event_name == 'push' }} ; then
@@ -77,51 +77,51 @@ jobs:
       - name: Upgrade Major Tag
         if: ${{ env.CONTINUE_WORKFLOW && env.TAG_CREATED }}
         run: |
-          latest_tag_under_major="$(git tag -l '${{ steps.get-major.outputs.major_tag }}.*' | sort -V | tail -1)"
+          latest_tag_under_major="$(git tag -l '${{ steps.get_major.outputs.major_tag }}.*' | sort -V | tail -1)"
 
           if [ -z "$latest_tag_under_major" ] ; then
             echo '- Exiting. No tags under major.' | tee -a $GITHUB_STEP_SUMMARY
             exit 1
           fi
 
-          major_tag_rev="$(git rev-list -1 "refs/tags/${{ steps.get-major.outputs.major_tag }}" || true)"
+          major_tag_rev="$(git rev-list -1 "refs/tags/${{ steps.get_major.outputs.major_tag }}" || true)"
           latest_rev_under_major="$(git rev-list -1 "refs/tags/$latest_tag_under_major")"
 
           if [ -n major_tag_rev ] && [ "$major_tag_rev" == "$latest_rev_under_major" ] ; then
-            echo '- Short-circuiting. Major tag `${{ steps.get-major.outputs.major_tag }}`(`'"$major_tag_rev"'`) equals latest tag under major version `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`).' | tee -a "$GITHUB_STEP_SUMMARY"
+            echo '- Short-circuiting. Major tag `${{ steps.get_major.outputs.major_tag }}`(`'"$major_tag_rev"'`) equals latest tag under major version `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`).' | tee -a "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          echo '- Upgrading major tag `${{ steps.get-major.outputs.major_tag }}`('"$([ -z "$major_tag_rev" ] && echo 'N/A' || echo "\`$major_tag_rev\`")"') to `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`)' | tee -a "$GITHUB_STEP_SUMMARY"
+          echo '- Upgrading major tag `${{ steps.get_major.outputs.major_tag }}`('"$([ -z "$major_tag_rev" ] && echo 'N/A' || echo "\`$major_tag_rev\`")"') to `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`)' | tee -a "$GITHUB_STEP_SUMMARY"
 
-          git tag -f "${{ steps.get-major.outputs.major_tag }}" "$latest_tag_under_major"
-          git push -f origin "${{ steps.get-major.outputs.major_tag }}"
+          git tag -f "${{ steps.get_major.outputs.major_tag }}" "$latest_tag_under_major"
+          git push -f origin "${{ steps.get_major.outputs.major_tag }}"
 
       - name: Downgrade Major Tag
         if: ${{ env.CONTINUE_WORKFLOW && !env.TAG_CREATED }}
         run: |
-          major_tag_rev="$(git rev-list -1 "refs/tags/${{ steps.get-major.outputs.major_tag }}" || true)"
+          major_tag_rev="$(git rev-list -1 "refs/tags/${{ steps.get_major.outputs.major_tag }}" || true)"
           if [ -z $major_tag_rev ] ; then
             echo '- Short-circuiting. Major tag doesn'"'"'t exist.' | tee -a "$GITHUB_STEP_SUMMARY"
             exit 0
           fi
 
-          tags_under_major="$(git tag -l '${{ steps.get-major.outputs.major_tag }}.*')"
+          tags_under_major="$(git tag -l '${{ steps.get_major.outputs.major_tag }}.*')"
 
           if [ -z "$tags_under_major" ] ; then
             echo '- Deleting major tag. Tag deletion resulted in no tags under major version.' | tee -a "$GITHUB_STEP_SUMMARY"
-            git push origin :refs/tags/${{ steps.get-major.outputs.major_tag }}
+            git push origin :refs/tags/${{ steps.get_major.outputs.major_tag }}
           else
             latest_tag_under_major=$(echo "$tags_under_major" | sort -V | tail -1)
             latest_rev_under_major="$(git rev-list -1 "refs/tags/$latest_tag_under_major")"
 
             if [ "$major_tag_rev" == "$latest_rev_under_major" ] ; then
-              echo '- Short-circuiting. Major tag `${{ steps.get-major.outputs.major_tag }}`(`'"$major_tag_rev"'`) equals latest tag under major version `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`).' | tee -a "$GITHUB_STEP_SUMMARY"
+              echo '- Short-circuiting. Major tag `${{ steps.get_major.outputs.major_tag }}`(`'"$major_tag_rev"'`) equals latest tag under major version `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`).' | tee -a "$GITHUB_STEP_SUMMARY"
               exit 0
             fi
 
-            echo '- Downgrading major tag `${{ steps.get-major.outputs.major_tag }}`(`'"$major_tag_rev"'`) to `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`)' | tee -a "$GITHUB_STEP_SUMMARY"
+            echo '- Downgrading major tag `${{ steps.get_major.outputs.major_tag }}`(`'"$major_tag_rev"'`) to `'"$latest_tag_under_major"'`(`'"$latest_rev_under_major"'`)' | tee -a "$GITHUB_STEP_SUMMARY"
 
-            git tag -f ${{ steps.get-major.outputs.major_tag }} $latest_tag_under_major
-            git push -f origin ${{ steps.get-major.outputs.major_tag }}
+            git tag -f ${{ steps.get_major.outputs.major_tag }} $latest_tag_under_major
+            git push -f origin ${{ steps.get_major.outputs.major_tag }}
           fi
