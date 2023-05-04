@@ -8,7 +8,7 @@ A list of steps for testing the workflow's features.
 1. Delete the branch.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Workflow skipped.
 
 ## Creating a new tag creates a corresponding major tag
@@ -17,7 +17,7 @@ A list of steps for testing the workflow's features.
 1. Create a new tag in the format `v<Major>.<Minor>[.<Patch>]`. For example, `v0.1.0`, `v0.2.0`, `v1.0.2`.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Workflow creates a new major tag with a revision matching the tag created earlier.
 
 ## Creating a tag that is not the latest short-circuits
@@ -26,7 +26,7 @@ A list of steps for testing the workflow's features.
 1. Create another tag based on the one created earlier.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Upgrade major tag short-circuits because of equality.
 
 ## Deleting major tag skips workflow
@@ -35,7 +35,7 @@ A list of steps for testing the workflow's features.
 1. Delete the major tag created earlier.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Workflow skipped.
 
 ## Deleting tag while major does not exist short-circuits
@@ -44,7 +44,7 @@ A list of steps for testing the workflow's features.
 1. Delete one of the tags created earlier.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Downgrade major tag short-circuits because major tag doesn't exist.
 
 ## Cleanup
@@ -59,7 +59,7 @@ A list of steps for testing the workflow's features.
 1. Delete one of the tags created earlier based on the latest tag.
 
 ### Outputs
-1. Workflow triggered.
+1. Workflow triggers.
 1. Downgrade major tag short-circuits because the major tag's revision will not change.
 
 ## Deleting latest tag downgrades major tag to the next latest tag
@@ -68,7 +68,7 @@ A list of steps for testing the workflow's features.
 1. Delete the latest tag of one major version.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Downgrade major tag updates major tag to next latest version.
 
 ## Deleting all tags under a major version deletes the major tag
@@ -77,7 +77,7 @@ A list of steps for testing the workflow's features.
 1. Delete all tags under a major version.
 
 ### Output
-1. Workflow triggered.
+1. Workflow triggers.
 1. Major tag is deleted because no versions exist under that major version.
 
 ## Check extraction of major tag is correct
