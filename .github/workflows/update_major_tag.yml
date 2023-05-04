@@ -1,17 +1,17 @@
 name: Update v<Major> Tag
 run-name: |
-  Update major tag: ${{ github.event_name }}${{ ((github.event_name == 'created' || github.event_name == 'push' && github.event.created) && ' created' || ' deleted') || '' }} ${{ github.event.ref }}
+  Update major tag: ${{ github.event_name }}${{ github.event_name == 'push' && (github.event.created && ' created' || ' deleted') || '' }} ${{ github.event.ref }}
 
 on:
   workflow_call:
 
 env:
   CONTINUE_WORKFLOW: 1
-  TAG_CREATED: ${{ (github.event_name == 'create' || github.event_name != 'push' && github.event_name != 'delete' || github.event.created) && '1' || '' }}
+  TAG_CREATED: ${{ (github.event_name != 'push' && github.event_name != 'delete' || github.event.created) && '1' || '' }}
 
 jobs:
   update_tag:
-    if: ${{ contains(github.event.ref, '.') && (github.event_name != 'create' && github.event_name != 'delete' || github.event.ref_type == 'tag') }}
+    if: ${{ contains(github.event.ref, '.') && (github.event_name != 'delete' || github.event.ref_type == 'tag') }}
     permissions:
       contents: write
     runs-on: ubuntu-22.04
