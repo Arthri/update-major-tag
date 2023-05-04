@@ -13,4 +13,4 @@ jobs:
   update_tag:
     permissions:
       contents: write
-    uses: ./.github/workflows/update-major-tag.yml
+    uses: ./.github/workflows/update_major-tag.yml
