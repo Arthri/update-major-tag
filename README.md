@@ -1,4 +1,4 @@
-# update_major-tag
+# update_major_tag
 A reusable workflow which automatically updates the major tag(for example, `v1`, `Test.App/v2`) when a new tag is created.
 
 ## Installation
@@ -21,7 +21,7 @@ jobs:
   update_tag:
     permissions:
       contents: write
-    uses: Arthri/update_major-tag/.github/workflows/update_major-tag.yml@v1
+    uses: Arthri/update_major_tag/.github/workflows/update_major_tag.yml@v1
 
 ```
 
