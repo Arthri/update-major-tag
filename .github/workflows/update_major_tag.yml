@@ -29,7 +29,7 @@ jobs:
             tag_path=${tag%/*}/
           fi
 
-          version=${tag##*/}
+          version=${tag#**/}
           if [[ $version != *.* ]] ; then
             echo 'Stopping workflow. Updated tag is a major tag.'
             echo 'CONTINUE_WORKFLOW=' >> "$GITHUB_ENV"
