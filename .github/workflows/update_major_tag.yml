@@ -10,7 +10,7 @@ env:
   TAG_CREATED: ${{ (github.event_name != 'push' && github.event_name != 'delete' || github.event.created) && '1' || '' }}
 
 jobs:
-  update_tag:
+  update-tag:
     if: ${{ contains(github.event.ref, '.') && (github.event_name != 'delete' || github.event.ref_type == 'tag') }}
     permissions:
       contents: write
